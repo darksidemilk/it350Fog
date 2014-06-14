@@ -7,7 +7,7 @@ if(isset($_GET['cost']))
     $cost=  mysql_real_escape_string($_GET['cost']);
     $purpose=  mysql_real_escape_string($_GET['purpose']);
     $loc=  mysql_real_escape_string($_GET['location']);
-    $query="INSERT INTO Purchase_record (date,numItems,cost,purpose,intendedLocation) VALUES ('$date',$numItems,$cost,'$purpose','$intendedLocation')";
+    $query="INSERT INTO Purchase_record (date,numItems,cost,purpose,intendedLocation) VALUES ('$date',$numItems,$cost,'$purpose','$loc')";
     mysql_query($query, $conn)or die(mysql_error());
 }
 else
