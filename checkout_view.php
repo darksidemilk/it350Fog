@@ -1,7 +1,7 @@
 <?php
 include 'db_connect.php';
-$query="SELECT * FROM Checkout_item";
-$result=  mysql_query($query, $conn);
+$query="SELECT type,byusticker,firstname,lastname,status,dueDate,intendedLocation,date FROM Checkout_item JOIN User on User.userId=Checkout_item.currentUser JOIN Purchase_record on Purchase_record.id=Checkout_item.purchaseRecordId ORDER BY type";
+$result=  mysql_query($query);
 ?>
 <html>
     <head>
@@ -38,15 +38,13 @@ $result=  mysql_query($query, $conn);
                     </tr>
                     <?php
                         while($row=  mysql_fetch_array($result)){
-                            $userquery='SELECT firstname, lastname from User WHERE userId='.$row['currentUser'];
-                            $userresult=  mysql_query($query, $conn);
-                            $userarray=  mysql_fetch_array($userresult);
-                            $username=$userarray['firstname'].' '.$userarray['lastname'];
+                            $username=$row['firstname'].' '.$row['lastname'];
+$prec=$row['intendedLocation'].': '.$row['date'];
                             ?>
                     <tr>
-                        <td><?=$row['type']?></td><td><?=$row['byusticker']?></td><td><?=$username?></td><td><?=status_string($row['status'])?></td><td><?=$row['dueDate']?></td><td>Purchase Record</td><td><a href="checkout_update.php" class="btn btn-sm btn-default" role="button">Edit</a></td><td><a href="checkout_delete.php" class="btn btn-sm btn-default" role="button">Delete</a></td>
+                        <td><?=$row['type']?></td><td><?=$row['byusticker']?></td><td><?=$username?></td><td><?=status_string($row['status'])?></td><td><?=$row['dueDate']?></td><td><?=$prec?></td><td><a href="checkout_update.php?byusticker=<?=$row['byusticker']?>" class="btn btn-sm btn-default" role="button">Edit</a></td><td><a href="checkout_delete.php?byusticker=<?=$row['byusticker']?>" class="btn btn-sm btn-default" role="button">Delete</a></td>
                     </tr>
-                    <?
+                    <?php
                         }
                     ?>
                 </table>

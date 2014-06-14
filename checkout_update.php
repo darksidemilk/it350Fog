@@ -14,23 +14,35 @@ if(isset($_GET['type']))
     $day=$_GET['day'];
     $date="$year-$month-$day";
     $diff=date_difference($date,$now);
-    if($diff>0){
+    if($diff>=0){
         $diff=0;
     }else{
         $diff*=-1;
     }
-    $query="INSERT INTO Checkout_items (type,byusticker,currentUser,status,dueDate,amountOverdue,purchaseRecordId) VALUES ('$type','$sticker',$user,$status,'$date',$diff,$purchase";
-    //mysql_query($query, $conn)or die(mysql_error());
+	$test="SELECT * FROM Checkout_item WHERE byusticker='$sticker'";
+	$result=mysql_query($test);
+	$count=mysql_num_rows($result);
+if($count>0){
+	$query="UPDATE Checkout_item SET type='$type',currentUser=$user,status=$status,dueDate='$date',amountOverdue=$diff,purchaseRecordId=$purchase WHERE byusticker='$sticker'";
 }
 else
 {
-   show_form(); 
+$query="INSERT INTO Checkout_item (type,byusticker,currentUser,status,dueDate,amountOverdue,purchaseRecordId) VALUES ('$type','$sticker',$user,$status,'$date',$diff,$purchase)";
+}
+    
+echo $query;
+    mysql_query($query)or die(mysql_error());
+header("Location:checkout_view.php");
+}
+else
+{
+   show_form($_GET['byusticker']); 
 }
 
 function show_form($id)
 {
-    $query="SELECT * FROM Checkout_items WHERE id=$id";
-    $data=mysql_fetch_array(mysql_query($query, $conn));
+    $query="SELECT * FROM Checkout_item WHERE byusticker='$id'";
+    $data=mysql_fetch_array(mysql_query($query));
     ?>
 <html>
     <head>
@@ -68,13 +80,14 @@ function show_form($id)
                       <label for="user">User</label>
                       <select class="form-control" id="user" name="userid">
                           <?php
-                            $query="SELECT userId,name FROM User ORDER BY name";
-                            $result=  mysql_query($query,$conn);
+                            $query="SELECT userId,firstname,lastname FROM User ORDER BY lastname,firstname";
+                            $result=  mysql_query($query);
                             while($row=mysql_fetch_array($result)){
                                 if($data['currentUser']==$row['userId']){
-                                    echo "<option selected value='".$row['userId'].">".$row['name']."</option>";
+                                    echo "<option selected value='".$row['userId']."'>".$row['firstname']." ".$row['lastname']."</option>";
+					continue;
                                 }
-                                echo "<option value='".$row['userId'].">".$row['name']."</option>";
+                                echo "<option value='".$row['userId']."'>".$row['firstname']." ".$row['lastname']."</option>";
                             }
                           ?>
                       </select>
@@ -83,20 +96,21 @@ function show_form($id)
               <br>
                  <label for="date">Due Date</label>
               <div class="row" id="date">
-                  <div class="col-xs-1">
+                  <div class="col-xs-2">
                           <select class="form-control" name="month">
                               <?php
                               $datearray=  explode('-', $data['dueDate']);
                               for($i=1;$i<=12;$i++){
                                   if($i==$datearray[1]){
                                     echo "<option selected>$i</option>";
+					continue;
                                   }
                                   echo "<option>$i</option>";
                               }
                               ?>
                           </select>
                   </div>
-                  <div class="col-xs-1">
+                  <div class="col-xs-2">
                       <select class="form-control" name="day">
                               <?php
                               for($i=1;$i<31;$i++){
@@ -110,13 +124,14 @@ function show_form($id)
                               ?>
                     </select>
                   </div>
-                 <div class="col-xs-1">
+                 <div class="col-xs-2">
                      <select class="form-control" name="year">
                          <?php
                          $now=$datearray[0];
                          for($i=$now-2;$i<$now+2;$i++){
                              if($i==$now){
                                  echo "<option selected>$i</option>";
+					continue;
                              }
                              echo "<option>$i</option>";
                          }
@@ -135,6 +150,7 @@ function show_form($id)
                                     foreach($stats as $key=>$value){
                                         if($key==$data['status']){
                                             echo "<option selected value='$key'>$value</option>";
+						continue;
                                         }
                                         echo "<option value='$key'>$value</option>";
                                     }
@@ -149,7 +165,7 @@ function show_form($id)
                          <select id="prec" name="prec">
                              <?php
                              $query="SELECT id,date,purpose,intendedLocation FROM Purchase_record";
-                             mysql_query($query, $conn);
+                             $result=mysql_query($query);
                              while($row=  mysql_fetch_array($result)){
                                  if($data['purchaseRecordId']==$row['id']){
                                     echo "<option selected value='".$row['id']."'>".$row['intendedLocation'].": ".$row['date']."</option>";    
