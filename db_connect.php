@@ -1,6 +1,8 @@
 <?php
-$database="";
-$username="";
-$password="";
-$conn=mysql_connect($database,$username,$password);
+$database="mefog.et.byu.edu";
+$username="collin";
+$password="chang3m3";
+$conn=mysql_connect($database,$username,$password)or die(mysql_error());
+mysql_select_db("fog")or die(mysql_error());
+    
 ?>
