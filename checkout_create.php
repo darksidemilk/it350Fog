@@ -67,10 +67,10 @@ function show_form()
                       <label for="user">User</label>
                       <select class="form-control" id="user" name="userid">
                           <?php
-                            $query="SELECT userId,name FROM User";
+                            $query="SELECT userId,firstname FROM User";
                             $result=  mysql_query($query,$conn);
                             while($row=mysql_fetch_array($result)){
-                                echo "<option value='".$row['userId'].">".$row['name']."</option>";
+                                echo "<option value='".$row['userId'].">".$row['firstname']."</option>";
                             }
                           ?>
                       </select>

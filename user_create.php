@@ -7,7 +7,6 @@ if(isset($_GET['lastname'])){
     $phone=  mysql_real_escape_string($_GET['phone']);
     $email=  mysql_real_escape_string($_GET['email']);
     $query="INSERT INTO User (firstname,lastname,netid) VALUES ('$first','$last','$netid');";
-	echo $query;
 	mysql_query($query, $conn)or die(mysql_error());
     $query="SELECT userId from User WHERE netid=$netid";
     $result=  mysql_query($query, $conn);
