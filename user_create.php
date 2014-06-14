@@ -1,13 +1,14 @@
 <?php
 include 'db_connect.php';
 if(isset($_GET['lastname'])){
-    $last=  mysql_real_escape_string($GET['lastname']);
-    $first=  mysql_real_escape_string($GET['firstname']);
-    $netid=  mysql_real_escape_string($GET['netid']);
-    $phone=  mysql_real_escape_string($GET['phone']);
-    $email=  mysql_real_escape_string($GET['email']);
-    $query="INSERT INTO User (firstname,lastname,netid) VALUES ('$first','$last','$netid')";
-    mysql_query($query, $conn)or die(mysql_error());
+    $last=  mysql_real_escape_string($_GET['lastname']);
+    $first=  mysql_real_escape_string($_GET['firstname']);
+    $netid=  mysql_real_escape_string($_GET['netid']);
+    $phone=  mysql_real_escape_string($_GET['phone']);
+    $email=  mysql_real_escape_string($_GET['email']);
+    $query="INSERT INTO User (firstname,lastname,netid) VALUES ('$first','$last','$netid');";
+	echo $query;
+	mysql_query($query, $conn)or die(mysql_error());
     $query="SELECT userId from User WHERE netid=$netid";
     $result=  mysql_query($query, $conn);
     $row=  mysql_fetch_array($result);
@@ -55,7 +56,7 @@ function show_form(){
                 <br>
                 <div class="row">
                     <div class="col-xs-3">
-                        <label for="netid">Nedid</label>
+                        <label for="netid">Netid</label>
                         <input id="netid" name="netid" maxlength="20" type="text">
                     </div>
                 </div>
