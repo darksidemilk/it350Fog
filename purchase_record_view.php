@@ -1,5 +1,5 @@
 <?php
-include 'db_connect.php';
+include 'header.php';
 if(!isset($_GET['id'])){
      die('No id found');
 }

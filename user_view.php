@@ -1,3 +1,6 @@
+<?php
+include 'header.php';
+?>
 <html>
     <head>
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -36,3 +39,4 @@
         </div>
     </body>
 </html>
+<?php?>

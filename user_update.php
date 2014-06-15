@@ -1,5 +1,5 @@
 <?php
-include 'db_connect.php';
+include 'header.php';
 $id=$GET['id'];
 if(isset($_GET['lastname'])){
     $last=  mysql_real_escape_string($GET['lastname']);
@@ -22,16 +22,6 @@ function show_form($id){
     $data=  mysql_fetch_array($result);
 ?>
 <html>
-    <head>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/scripts.js"></script>
-	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link href="css/bootstrap-responsive.css" rel="stylesheet">
-    </head>
     <body>
         <div class="container">
             <div class="row">

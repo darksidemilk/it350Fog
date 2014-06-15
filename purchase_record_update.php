@@ -1,5 +1,5 @@
 <?php
-include 'db_connect.php';
+include 'header.php';
 if(isset($_GET['newdata']))
 {
     $date=$_GET['month'].'-'.$_GET['day'].'-'.$_GET['year'];
